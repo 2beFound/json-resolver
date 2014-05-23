@@ -3,7 +3,7 @@
     "description": "A simple tool to resolve objects / trees of objects when encoding / decoding json",
     "minimum-stability": "stable",
     "license": "MIT",
-    "keywords":     ["Minecraft", "Admin"],
+    "keywords":     ["json"],
     "type":         "library",
     "authors": [
         {
