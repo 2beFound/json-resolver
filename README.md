@@ -64,4 +64,4 @@ example.php
 
     $decodedBook = $resolver->decode($json);
 
-For further examples see the examples section.
+For further examples see the <a href="examples/">examples</a> section.
