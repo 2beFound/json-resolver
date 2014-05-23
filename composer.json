@@ -1,0 +1,20 @@
+{
+    "name": "gries/json-object-resolver",
+    "description": "A simple tool to resolve objects / trees of objects when encoding / decoding json",
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "keywords":     ["Minecraft", "Admin"],
+    "type":         "library",
+    "authors": [
+        {
+            "name": "Christoph Rosse",
+            "email": "christoph@rosse.at"
+        }
+    ],
+    "require-dev": {
+        "phpspec/phpspec": "2.0.*@dev"
+    },
+    "autoload": {
+        "psr-0": {"Gries\\JsonObjectResolver": "src/"}
+    }
+}
