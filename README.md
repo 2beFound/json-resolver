@@ -10,6 +10,7 @@ This is being achieved by simply injecting the original class into the json as "
 Installation
 =============================
 JsonResolver can be installed via. composer:
+
     {
         "require": {
             "gries/json-resolver": "dev-master"
