@@ -23,9 +23,8 @@ Every plain php object is supported the only requirement is that \JsonSerializea
 
 Current features:
 - automatically decodes objects back to their previous classes.
-- automatically decodes related objects back to their previous classes.
-  if they implement the \JsonSerializeable interface.
-- automatically decodes arrays / traversable related objects if their values implemnt the \JsonSerializeable interface.
+- automatically decodes related objects back to their previous classes if they implement the \JsonSerializeable interface.
+- automatically decodes arrays / traversable related objects if their values implement the \JsonSerializeable interface.
 
 Book.php
 --------
