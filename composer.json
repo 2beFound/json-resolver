@@ -1,5 +1,5 @@
 {
-    "name": "gries/json-object-resolver",
+    "name": "gries/json-resolver",
     "description": "A simple tool to resolve objects / trees of objects when encoding / decoding json",
     "minimum-stability": "stable",
     "license": "MIT",
