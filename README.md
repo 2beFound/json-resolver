@@ -10,6 +10,7 @@ This is being achieved by simply injecting the original class into the json as "
 Installation
 =============================
 JsonResolver can be installed via. composer:
+
     {
         "require": {
             "gries/json-resolver": "dev-master"
@@ -22,9 +23,8 @@ Every plain php object is supported the only requirement is that \JsonSerializea
 
 Current features:
 - automatically decodes objects back to their previous classes.
-- automatically decodes related objects back to their previous classes.
-  if they implement the \JsonSerializeable interface.
-- automatically decodes arrays / traversable related objects if their values implemnt the \JsonSerializeable interface.
+- automatically decodes related objects back to their previous classes if they implement the \JsonSerializeable interface.
+- automatically decodes arrays / traversable related objects if their values implement the \JsonSerializeable interface.
 
 Book.php
 --------
@@ -64,4 +64,4 @@ example.php
 
     $decodedBook = $resolver->decode($json);
 
-For further examples see the examples section.
+For further examples see the <a href="examples/">examples</a> section.
