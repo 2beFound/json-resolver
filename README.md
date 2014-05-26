@@ -26,42 +26,20 @@ Current features:
 - automatically decodes related objects back to their previous classes if they implement the \JsonSerializeable interface.
 - automatically decodes arrays / traversable related objects if their values implement the \JsonSerializeable interface.
 
-Book.php
---------
-    <?php
-    class Book implements \JsonSerializable
-    {
-        protected $title;
-
-        public function setTitle($title)
-        {
-            $this->title = $title;
-        }
-
-        public function getTitle()
-        {
-            return $this->title;
-        }
-
-        public function jsonSerialize()
-        {
-            return ['title' => $this->title];
-        }
-    }
-
-example.php
+example usage
 -----------
     <?php
-    use Gries\JsonObjectResolver\JsonResolver;
 
-    require_once __DIR__.'/../vendor/autoload.php';
-
-    $book = new \Book();
-    $book->setTitle('test-title');
+    $book = new Book();
+    $author = new Author();
+    $author->addBook($book);    // author has a property books that is a array or TraversableInterface
 
     $resolver = new JsonResolver();
-    $json = $resolver->encode($book);
 
-    $decodedBook = $resolver->decode($json);
+    $json = $resolver->encode($author);
+    $author = $resolver->decode($json);
+
+    get_class($author); // Author
+    get_class($author->getBooks()->getFirst()); // Book
 
 For further examples see the <a href="examples/">examples</a> section.
