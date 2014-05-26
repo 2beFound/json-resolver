@@ -20,7 +20,7 @@ class JsonResolver
      */
     public function decode($json)
     {
-        if (!$object = json_decode($json)) {
+        if (!$object = json_decode($json, true)) {
             throw new \InvalidArgumentException('Invalid json given!');
         }
 
@@ -35,8 +35,12 @@ class JsonResolver
      * @param \JsonSerializable $object
      * @return string as json
      */
-    public function encode(\JsonSerializable $object)
+    public function encode($object)
     {
+        if (!$object instanceof \JsonSerializable) {
+            return json_encode($object);
+        }
+
         $arrayData = $this->createArrayData($object);
 
         return json_encode($arrayData);
@@ -57,12 +61,14 @@ class JsonResolver
      */
     private function resolveObject($object)
     {
-        if (!property_exists($object, 'json_resolve_class')) {
+        if (!isset($object['json_resolve_class'])) {
             return $object;
         }
 
-        $class = $object->json_resolve_class;
-        $newClass = new $class;
+        $class = $object['json_resolve_class'];
+
+        $ref = new \ReflectionClass($class);
+        $newClass = $ref->newInstanceWithoutConstructor();
 
         return $this->convert($newClass, $object);
     }
@@ -74,16 +80,11 @@ class JsonResolver
      * @param \stdClass $jsonObject
      * @return mixed
      */
-    private function convert($target, \stdClass $jsonObject)
+    private function convert($target, array $jsonData)
     {
-        $sourceReflection = new \ReflectionObject($jsonObject);
         $destinationReflection = new \ReflectionObject($target);
-        $sourceProperties = $sourceReflection->getProperties();
 
-        foreach ($sourceProperties as $sourceProperty) {
-            $sourceProperty->setAccessible(true);
-            $name = $sourceProperty->getName();
-            $value = $sourceProperty->getValue($jsonObject);
+        foreach ($jsonData as $name => $value) {
 
             if ($name == 'json_resolve_class') {
                 continue;
@@ -166,7 +167,7 @@ class JsonResolver
      */
     private function convertPropertyValue($value)
     {
-        if (is_object($value) && property_exists($value, 'json_resolve_class')) {
+        if (is_array($value) && isset($value['json_resolve_class'])) {
             $value = $this->resolveObject($value);
         }
 
