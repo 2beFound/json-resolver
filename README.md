@@ -30,8 +30,8 @@ example usage
 -----------
     <?php
 
-    $book = new Book();
-    $author = new Author();
+    $book = new Book(); // JsonSerializeable
+    $author = new Author(); // JsonSerializeable
     $author->addBook($book);    // author has a property books that is a array or TraversableInterface
 
     $resolver = new JsonResolver();
