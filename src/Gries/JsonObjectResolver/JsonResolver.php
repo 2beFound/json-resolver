@@ -18,13 +18,13 @@ class JsonResolver
      *
      * @return mixed
      */
-    public function decode($json)
+    public function decode($json, $fallbackClass = null)
     {
         if (!$object = json_decode($json, true)) {
             throw new \InvalidArgumentException('Invalid json given!');
         }
 
-        $object = $this->resolveObject($object);
+        $object = $this->resolveObject($object, $fallbackClass);
 
         return $object;
     }
@@ -59,13 +59,18 @@ class JsonResolver
      * @param $object
      * @return mixed
      */
-    private function resolveObject($object)
+    private function resolveObject($object, $fallbackClass = null)
     {
         if (!isset($object['json_resolve_class'])) {
-            return $object;
+            if ($fallbackClass) {
+                $class = $fallbackClass;
+            } else {
+                return $object;
+            }
+        } else {
+            $class = $object['json_resolve_class'];
         }
 
-        $class = $object['json_resolve_class'];
 
         $ref = new \ReflectionClass($class);
         $newClass = $ref->newInstanceWithoutConstructor();
@@ -115,7 +120,7 @@ class JsonResolver
     {
         $arrayData = $object->jsonSerialize();
 
-        $arrayData['json_resolve_class'] = get_class($object);
+        $arrayData['json_resolve_class'] = $this->getClassForObject($object);
 
         // recursively resolve JsonResolvableInterfaces
         foreach ($arrayData as $key => $value) {
@@ -123,6 +128,13 @@ class JsonResolver
         }
 
         return $arrayData;
+    }
+
+    private function getClassForObject($object)
+    {
+        $class = get_class($object);
+
+        return $class;
     }
 
     /**

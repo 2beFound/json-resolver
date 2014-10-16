@@ -20,14 +20,6 @@ class JsonResolverSpec extends ObjectBehavior
         $this->shouldThrow('\InvalidArgumentException')->during('decode', ['not json']);
     }
 
-    function it_resolves_to_stdClass_if_no_resolve_class_is_present()
-    {
-        $json = json_encode(['id' => 1]);
-
-        $this->decode($json)->shouldBeInstanceOf('\stdClass');
-        $this->decode($json)->shouldHaveProperty('id', 1);
-    }
-
     function it_resolves_a_single_object()
     {
         $json = json_encode(['id' => 1, 'privateId' => 2, 'json_resolve_class' => 'Gries\JsonObjectResolver\Stub\JsonResolvableStub']);
@@ -134,6 +126,27 @@ class JsonResolverSpec extends ObjectBehavior
         );
 
         $result = $this->decode($json);
+        $result->shouldBeInstanceOf('Gries\JsonObjectResolver\Stub\JsonResolvableCollectionStub');
+        $result->shouldHaveProperty('id', 1);
+        $result->children[0]->shouldBeInstanceOf('Gries\JsonObjectResolver\Stub\JsonResolvableStub');
+        $result->children[0]->shouldHaveProperty('id', 2);
+    }
+
+    function it_decodes_a_object_using_a_fallback_class()
+    {
+        $json = json_encode(
+            [
+                'id' => 1,
+                'children' => [
+                    0 => [
+                        'id' => 2,
+                        'json_resolve_class' => 'Gries\JsonObjectResolver\Stub\JsonResolvableStub',
+                    ]
+                ]
+            ]
+        );
+
+        $result = $this->decode($json, 'Gries\JsonObjectResolver\Stub\JsonResolvableCollectionStub');
         $result->shouldBeInstanceOf('Gries\JsonObjectResolver\Stub\JsonResolvableCollectionStub');
         $result->shouldHaveProperty('id', 1);
         $result->children[0]->shouldBeInstanceOf('Gries\JsonObjectResolver\Stub\JsonResolvableStub');

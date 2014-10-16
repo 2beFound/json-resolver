@@ -25,6 +25,7 @@ Current features:
 - automatically decodes objects back to their previous classes.
 - automatically decodes related objects back to their previous classes if they implement the \JsonSerializeable interface.
 - automatically decodes arrays / traversable related objects if their values implement the \JsonSerializeable interface.
+- has a fallback method for objects that have not been previously encoded with the JsonResolver
 
 example usage
 -----------
