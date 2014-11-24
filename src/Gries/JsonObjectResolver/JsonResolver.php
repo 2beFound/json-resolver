@@ -151,6 +151,10 @@ class JsonResolver
 
         // recursively resolve properties
         if ($this->isIterable($value)) {
+            
+            // clone collections before encoding them
+            $value = $this->getFixedIterable($value);
+
             foreach ($value as $key => $subValue) {
                 $value[$key] = $this->createPropertyData($subValue);
             }
@@ -168,6 +172,24 @@ class JsonResolver
     private function isIterable($var)
     {
         return (is_array($var) || $var instanceof \Traversable);
+    }
+
+    /**
+     * If its a traversable the object is cloned
+     * the avoid changing the source object during json encoding.
+     *
+     * @param $var
+     * @return \Traversable
+     */
+    private function getFixedIterable($var)
+    {
+        if (is_array($var)) {
+            return $var;
+        }
+
+        if ($var instanceof \Traversable) {
+            return clone $var;
+        }
     }
 
     /**
