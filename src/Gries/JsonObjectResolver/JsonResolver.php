@@ -59,7 +59,7 @@ class JsonResolver
      * @param $object
      * @return mixed
      */
-    private function resolveObject($object, $fallbackClass = null)
+    public function resolveObject($object, $fallbackClass = null)
     {
         if (!isset($object['json_resolve_class'])) {
             if ($fallbackClass) {
